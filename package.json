@@ -1,0 +1,56 @@
+{
+  "name": "@signalstickers/fetch-sticker-data-webpack-plugin",
+  "version": "0.1.0",
+  "description": "Webpack plugin which pre-loads sticker data at build-time.",
+  "contributors": [
+    {
+      "name": "Romain Ricard",
+      "url": "https://romainricard.fr/"
+    },
+    {
+      "name": "sticker201"
+    },
+    {
+      "name": "Joshua Martin",
+      "url": "https://joshua.dev"
+    }
+  ],
+  "license": "WTFPL",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/signalstickers/fetch-data-webpack-plugin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/signalstickers/fetch-data-webpack-plugin/issues"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "dist/fetch-sticker-data-webpack-plugin.js",
+  "scripts": {
+    "test": "nps test",
+    "test:watch": "nps test.watch",
+    "build": "nps build",
+    "bump": "nps bump",
+    "prepare": "nps prepare"
+  },
+  "dependencies": {
+    "@signalstickers/stickers-client": "^0.1.3",
+    "find-up": "^4.1.0",
+    "fs-extra": "^8.1.0",
+    "js-yaml": "^3.13.1",
+    "p-queue": "^6.2.1",
+    "p-retry": "^4.2.0",
+    "progress": "^2.0.3",
+    "ramda": "^0.27.0",
+    "webpack": "^4.41.5"
+  },
+  "devDependencies": {
+    "@darkobits/ts-unified": "^4.0.0-beta.2",
+    "@types/fs-extra": "^8.0.1",
+    "@types/js-yaml": "^3.12.2",
+    "@types/progress": "^2.0.3",
+    "@types/ramda": "^0.26.41",
+    "@types/webpack": "^4.41.5"
+  }
+}
