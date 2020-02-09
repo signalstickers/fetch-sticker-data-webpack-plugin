@@ -2,17 +2,15 @@
   <img src="https://user-images.githubusercontent.com/441546/74094549-eb837700-4a97-11ea-867f-448675c19342.png" style="max-width: 100%;"></<img>
 </a>
 <p align="center">
-  <a href="https://www.npmjs.com/package/@signalstickers/fetch-sticker-data-webpack-plugin"><img src="https://img.shields.io/npm/v/@signalstickers/fetch-sticker-data-webpack-plugin.svg?style=flat-square"></a>
-  <a href="https://travis-ci.com/signalstickers/fetch-data-webpack-plugin"><img src="https://img.shields.io/travis/com/signalstickers/fetch-data-webpack-plugin?style=flat-square"></a>
-  <a href="https://david-dm.org/signalstickers/fetch-sticker-data-webpack-plugin"><img src="https://img.shields.io/david/signalstickers/fetch-sticker-data-webpack-plugin.svg?style=flat-square"></a>
-  <a href="https://conventionalcommits.org"><img src="https://img.shields.io/badge/conventional%20commits-1.0.0-FB5E85.svg?style=flat-square"></a>
+  <a href="https://www.npmjs.com/package/@signalstickers/fetch-sticker-data-webpack-plugin"><img src="https://img.shields.io/npm/v/@signalstickers/fetch-sticker-data-webpack-plugin.svg?"></a>
+  <a href="https://travis-ci.com/signalstickers/fetch-data-webpack-plugin"><img src="https://img.shields.io/travis/com/signalstickers/fetch-data-webpack-plugin?"></a>
+  <a href="https://david-dm.org/signalstickers/fetch-sticker-data-webpack-plugin"><img src="https://img.shields.io/david/signalstickers/fetch-sticker-data-webpack-plugin.svg?"></a>
+  <a href="https://conventionalcommits.org"><img src="https://img.shields.io/badge/conventional%20commits-1.0.0-FB5E85.svg?"></a>
 </p>
 
 This Webpack plugin fetches sticker pack data from Signal at build-time,
 allowing the Signal Stickers website to load this data without having to fetch
 and decrypt it from the Signal API.
-
-
 
 # Install
 
