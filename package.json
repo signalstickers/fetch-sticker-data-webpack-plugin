@@ -1,6 +1,6 @@
 {
   "name": "@signalstickers/fetch-sticker-data-webpack-plugin",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "description": "Webpack plugin which pre-loads sticker data at build-time.",
   "contributors": [
     {
