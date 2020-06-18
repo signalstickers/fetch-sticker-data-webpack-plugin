@@ -52,7 +52,7 @@ async function getAllStickerPacks(inputFile: string): Promise<Array<StickerPackP
   });
 
   await requestQueue.addAll(stickerPackEntries.map(([id, meta], index) => {
-    return () => pRetry(async () => {
+    return async () => pRetry(async () => {
       const cachePath = path.resolve(cacheDir, `${id}.json`);
       const cacheHasPack = await fs.pathExists(cachePath);
       let stickerPackPartial: StickerPackPartial;
