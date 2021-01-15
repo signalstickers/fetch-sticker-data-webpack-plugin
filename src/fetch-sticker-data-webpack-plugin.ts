@@ -18,7 +18,7 @@ import {StickerPackPartial, StickerPackYaml} from 'etc/types';
 /**
  * Limits concurrency of requests made to the Signal API to avoid throttling.
  */
-const requestQueue = new pQueue({concurrency: 6});
+const requestQueue = new pQueue({ concurrency: 6 });
 
 
 /**
@@ -27,11 +27,14 @@ const requestQueue = new pQueue({concurrency: 6});
  * performance.
  */
 async function getAllStickerPacks(inputFile: string): Promise<Array<StickerPackPartial>> {
+  let cacheHits = 0;
+  let cacheMisses = 0;
+
   const stickerPackPartials: Array<StickerPackPartial> = [];
-  const stickerPackYaml: StickerPackYaml = yaml.safeLoad(await fs.readFile(inputFile, {encoding: 'utf8'}));
+  const stickerPackYaml = yaml.load(await fs.readFile(inputFile, { encoding: 'utf8' })) as StickerPackYaml;
   const stickerPackEntries = Object.entries(stickerPackYaml);
 
-  const gitRoot = await findUp('.git', {type: 'directory', cwd: __dirname});
+  const gitRoot = await findUp('.git', { type: 'directory', cwd: __dirname });
 
   if (!gitRoot) {
     throw new Error('Not in a git repository.');
@@ -51,37 +54,45 @@ async function getAllStickerPacks(inputFile: string): Promise<Array<StickerPackP
     head: '>'
   });
 
-  await requestQueue.addAll(stickerPackEntries.map(([id, meta], index) => {
-    return async () => pRetry(async () => {
-      const cachePath = path.resolve(cacheDir, `${id}.json`);
-      const cacheHasPack = await fs.pathExists(cachePath);
-      let stickerPackPartial: StickerPackPartial;
+  // Map over our list of entries from the input file and for each entry, add an
+  // async "task function" to our queue (used to limit concurrency). Each task
+  // function utilizes pRetry so that we can recover from transient network
+  // errors and/or throttling from the Signal API.
+  await requestQueue.addAll(R.map(([id, meta]) => async () => pRetry(async () => {
+    const cachePath = path.resolve(cacheDir, `${id}.json`);
+    const cacheHasPack = await fs.pathExists(cachePath);
+    let stickerPackPartial: StickerPackPartial;
 
-      if (cacheHasPack) {
-        stickerPackPartial = await fs.readJson(cachePath);
-      } else {
-        const stickerPackManifest = await getStickerPackManifest(id, meta.key);
+    if (cacheHasPack) {
+      stickerPackPartial = await fs.readJson(cachePath);
+      cacheHits++;
+    } else {
+      const stickerPackManifest = await getStickerPackManifest(id, meta.key);
 
-        stickerPackPartial = {
-          meta: {...meta, id},
-          // To keep the size of the generated JSON file small, only extract
-          // the properties from the manifest that we need to generate a list
-          // of search results.
-          manifest: R.pick(['title', 'author', 'cover'], stickerPackManifest)
-        };
+      stickerPackPartial = {
+        meta: {...meta, id},
+        // To keep the size of the generated JSON file small, only extract
+        // the properties from the manifest that we need to generate a list
+        // of search results.
+        manifest: R.pick(['title', 'author', 'cover'], stickerPackManifest)
+      };
 
-        await fs.writeJson(cachePath, stickerPackPartial);
-      }
+      await fs.writeJson(cachePath, stickerPackPartial);
+      cacheMisses++;
+    }
 
-      // Order partials in the reverse order of stickers.yml, so the most
-      // recently added pack is first (assuming stickers.yml is only ever
-      // appended to when new packs are added).
-      stickerPackPartials[stickerPackEntries.length - index - 1] = stickerPackPartial;
-      bar.tick();
-    }, {retries: 2});
-  }));
+    // Order partials in the reverse order of stickers.yml, so the most
+    // recently added pack is first (assuming stickers.yml is only ever
+    // appended to when new packs are added).
+    stickerPackPartials.unshift(stickerPackPartial);
+    bar.tick();
+  }, { retries: 2 }), stickerPackEntries));
+
+  const cacheHitRate = Math.round(cacheHits / (cacheHits + cacheMisses) * 100);
+  const cacheMissRate = Math.round(cacheMisses / (cacheHits + cacheMisses) * 100);
 
   console.log('[FetchStickerDataPlugin] Done.\n');
+  console.log(`[FetchStickerDataPlugin] Cache hits: ${cacheHits} (${cacheHitRate}%). Cache misses: ${cacheMisses} (${cacheMissRate}%).`);
 
   return stickerPackPartials;
 }

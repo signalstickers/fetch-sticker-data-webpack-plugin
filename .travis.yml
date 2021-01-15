@@ -1,7 +1,0 @@
-os: linux
-language: node_js
-node_js: 12
-install: npm ci --ignore-scripts
-script:
-  - npx nps build
-cache: npm

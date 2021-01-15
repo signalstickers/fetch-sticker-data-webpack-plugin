@@ -28,34 +28,29 @@
   ],
   "main": "dist/fetch-sticker-data-webpack-plugin.js",
   "scripts": {
-    "test": "nps test",
-    "test:watch": "nps test.watch",
-    "build": "nps build",
-    "bump": "nps bump",
-    "prepare": "nps prepare",
-    "help": "nps --scripts"
+    "prepare": "nps prepare"
   },
   "peerDependencies": {
     "webpack": "^4.41.5"
   },
   "dependencies": {
-    "@signalstickers/stickers-client": "^1.0.0",
-    "find-up": "^4.1.0",
+    "@signalstickers/stickers-client": "^1.0.2",
+    "find-up": "^5.0.0",
     "fs-extra": "^9.0.1",
-    "js-yaml": "^3.14.0",
-    "p-queue": "^6.4.0",
+    "js-yaml": "^4.0.0",
+    "p-queue": "^6.6.2",
     "p-retry": "^4.2.0",
     "progress": "^2.0.3",
-    "ramda": "^0.27.0"
+    "ramda": "^0.27.1"
   },
   "devDependencies": {
-    "@darkobits/ts-unified": "^5.0.0",
-    "@types/fs-extra": "^9.0.1",
-    "@types/jest": "^26.0.0",
-    "@types/js-yaml": "^3.12.4",
+    "@darkobits/ts": "^0.2.2",
+    "@types/fs-extra": "^9.0.4",
+    "@types/jest": "^26.0.15",
+    "@types/js-yaml": "^4.0.0",
     "@types/progress": "^2.0.3",
-    "@types/ramda": "^0.27.6",
-    "@types/webpack": "^4.41.17",
-    "webpack": "^4.43.0"
+    "@types/ramda": "^0.27.32",
+    "@types/webpack": "^4.41.25",
+    "webpack": "^4.44.2"
   }
 }

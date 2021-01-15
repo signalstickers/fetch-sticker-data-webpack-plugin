@@ -1,8 +1,7 @@
 module.exports = {
-  extends: [
-    require.resolve('@darkobits/ts-unified/dist/config/eslint-react')
-  ],
+  extends: require('@darkobits/ts').eslint,
   rules: {
-    'no-console': 'off'
+    'no-console': 'off',
+    'prefer-arrow/prefer-arrow-functions': 'off'
   }
 };
